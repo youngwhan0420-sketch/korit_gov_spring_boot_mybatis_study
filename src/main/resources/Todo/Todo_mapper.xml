@@ -1,0 +1,4 @@
+<mapper namespace="com_korit.mybatis_study.mapper.BoardMapper">
+
+
+</mapper>
