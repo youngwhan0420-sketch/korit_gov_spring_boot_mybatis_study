@@ -52,6 +52,7 @@ public class   BoardService {
         if (result != 1) {
             return new ApiRespDto<>("failed", "게시물을 수정하는데 문제가 발생했습니다.", null);
         }
+
         return new ApiRespDto<>("success", "게시물 수정 성공", null);
     }
 

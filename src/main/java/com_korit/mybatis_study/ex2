@@ -1,13 +1,15 @@
-1. TodoController에 @RestController @RestController 해준다.
-2. Dto에 AddTodoReqDto를 작성한다.
-3. TodoController들어가서 PostMapping("/add")작성하고 메소드까지만 작성하고 서비스로 넘어간다.
-4. @Service걸어주고 public ApiRespDto<?> addTodo작성하고 타이틀 중복검사 해야하니 TodoRepository가서 @Repository해주고
-5. public Optional 하고 이거에대한 결과는 메퍼에서 오기 때문에 메퍼에 가서 Optional<투두>findTodoByTitle작성해준다.얘는 xml이 구현해준다.
+1. TodoController에 @RestController @RequestMapping 해주고 클라이언트가 보내는 요청데이터를 담기위해 dto에 AddTodoReqDto를 작성한다.
+2. TodoController들어가서 게시글을 추가하기 위해 PostMapping("/add")에 유저를 추가하기 위한 메소드 작성해주고
+3. TodoController에서 받은 요청을 처리하기 위해 TodoService 로 넘어간다. @Service걸고 title 추가를 하기위해 public ApiRespDto<?> addTodo문 작성하고
+4. 중복되는 title이 있는지 확인하기 위해 TodoRepository가서 @Repository해주고
+5. public Optional 하고 이거에대한 결과는 메퍼에서 오기 때문에 메퍼에 가서 Optional<투두>findTodoByTitle작성해준다.
 6. xml가서 resultMap만들어주고 안에 id와 result작성한다.그리고 mysql에서 투두 테이블을 만들어주고 select문을 작성해준다.
-7. 레퍼지토리가서 오토와이어드 해주고 return todoMapper.findByTitle(title); 해준다.
-8. TodoService가서 오토와이어드 걸어주고 타이틀 중복검사를 걸어주는데 Optional<투두> foundTodo = todoRepository.find해주고
+7. TodoRepository가서 @Autowired 해주고 return todoMapper.findByTitle(title); 해준다.
+8. TodoService가서 @Autowired 걸어주고 타이틀 중복검사를 걸어주는데 Optional<투두> foundTodo = todoRepository.find해주고
 9. if (foundTodo.isPresent()) { return new ApiRespDto<>()} 해준다.
-10. 이제 추가를 해준다. 추가를 해줄려면 투두레퍼지토리에서 public Optional<투두> addTodo(투두 투두)해주고 mapper가서
+
+추가
+10. 추가를 해줄려면 TodoRepository에서 public Optional<투두> addTodo(투두 투두)해주고 mapper가서
 11. 투두를 반환하는 int addTodo(투두 투두); 해준다. 그다음에 todo_mapper.xml를 가서 insert문 작성해주고 id가 getTodoAll인 select문 작성도해준다.
 12. id 단건조회인 getTodoByTodoId인 select문 작성해주고 이번엔 id로 찾아야하니 조건이 추가된다. where todo_id = #{todoId};
 13. 그리고 update문을 써준다.TodoRepository가서 try로 감싸준다. 그다음 TodoService 가서 추가에 Optional<투두> 투두 = todoRepository.addTodo(add해주고
@@ -18,9 +20,9 @@
 
 단건조회
 18. todoMapper가서 Optional<투두> getTodoByTo해주고 레퍼지토리에서  public Optional<투두> getTodoByTodoId(Integer todoId) { return 작성해주고
-20. 서비스 가서 public ApiRespDto<?> getTodoByTodoId(Integer todoId) { Opional<투두> foundTodo = todoRepository.getTodoByTodoId 문 작성하고
+20. 서비스 가서 public ApiRespDto<?> getTodoByTodoId(Integer todoId) { Optional<투두> foundTodo = todoRepository.getTodoByTodoId 문 작성하고
 21. 이제 컨트롤러에 연결해주면 된다. 컨트롤러가서 return ResponseEntity.ok해주면 TodoController가서 @GetMapping("/{todoId}")문 작성 해준다.
-단건조회는 끝
+
 
 수정
 23. todoMapper가서 int editTodo(투두 투두); 해주고  레퍼지토리가서 public int editTodo 해주고
