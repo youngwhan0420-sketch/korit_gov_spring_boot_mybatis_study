@@ -1,0 +1,34 @@
+1. TodoController에 @RestController @RestController 해준다.
+2. Dto에 AddTodoReqDto를 작성한다.
+3. TodoController들어가서 PostMapping("/add")작성하고 메소드까지만 작성하고 서비스로 넘어간다.
+4. @Service걸어주고 public ApiRespDto<?> addTodo작성하고 타이틀 중복검사 해야하니 TodoRepository가서 @Repository해주고
+5. public Optional 하고 이거에대한 결과는 메퍼에서 오기 때문에 메퍼에 가서 Optional<투두>findTodoByTitle작성해준다.얘는 xml이 구현해준다.
+6. xml가서 resultMap만들어주고 안에 id와 result작성한다.그리고 mysql에서 투두 테이블을 만들어주고 select문을 작성해준다.
+7. 레퍼지토리가서 오토와이어드 해주고 return todoMapper.findByTitle(title); 해준다.
+8. TodoService가서 오토와이어드 걸어주고 타이틀 중복검사를 걸어주는데 Optional<투두> foundTodo = todoRepository.find해주고
+9. if (foundTodo.isPresent()) { return new ApiRespDto<>()} 해준다.
+10. 이제 추가를 해준다. 추가를 해줄려면 투두레퍼지토리에서 public Optional<투두> addTodo(투두 투두)해주고 mapper가서
+11. 투두를 반환하는 int addTodo(투두 투두); 해준다. 그다음에 todo_mapper.xml를 가서 insert문 작성해주고 id가 getTodoAll인 select문 작성도해준다.
+12. id 단건조회인 getTodoByTodoId인 select문 작성해주고 이번엔 id로 찾아야하니 조건이 추가된다. where todo_id = #{todoId};
+13. 그리고 update문을 써준다.TodoRepository가서 try로 감싸준다. 그다음 TodoService 가서 추가에 Optional<투두> 투두 = todoRepository.addTodo(add해주고
+14. 컨트롤러가서 오토와이어드 해주고 return ResponseEntity 작성 해준다. 이제 조회를 해준다.
+15. mapper가서
+16. 레퍼지토리가서 public List<투두> getTodoAll()  서비스에서도 반환해야하니 public ApiRespDto<?> getTodoAll() { return new ApiRespDto<>()해준다.
+17. 컨트롤러 가서 @GetMapping("/all")문 작성 해준다.
+
+단건조회
+18. todoMapper가서 Optional<투두> getTodoByTo해주고 레퍼지토리에서  public Optional<투두> getTodoByTodoId(Integer todoId) { return 작성해주고
+20. 서비스 가서 public ApiRespDto<?> getTodoByTodoId(Integer todoId) { Opional<투두> foundTodo = todoRepository.getTodoByTodoId 문 작성하고
+21. 이제 컨트롤러에 연결해주면 된다. 컨트롤러가서 return ResponseEntity.ok해주면 TodoController가서 @GetMapping("/{todoId}")문 작성 해준다.
+단건조회는 끝
+
+수정
+23. todoMapper가서 int editTodo(투두 투두); 해주고  레퍼지토리가서 public int editTodo 해주고
+24. Dto가서 editTodoReqDto 작성해주고 서비스가서 public ApiRespDto<?> 하고 해당아이디가 있는지 확인해야하니 Optional<투두> foundTodo 해서 있는지 확인해주고
+25. 이제 컨트롤러로 가서 @PostMapping("/edit")문 작성해준다.
+
+삭제
+27. TodoMapper가서 int removeTodo(Integer todoId); 해주고 todo_mapper.xml가서 <delete>문 작성해준다.
+28. 레퍼지토리가서 public int removeTodo문 작성 해주고 service가서 public ApiRespDto<?> removeTodo 해주는데 삭제해주기 전에 있는지 확인해야하니
+29. 복붙 해주고 int result = 문 작성하고  컨트롤러가서 @PostMapping("/remove")문 작성해준다.
+
